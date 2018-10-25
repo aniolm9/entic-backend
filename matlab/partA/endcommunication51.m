@@ -1,4 +1,4 @@
-function endcommunication51 (s)
+function endcommunication51(s)
     fclose(s);
     delete(s);
     clear s;
