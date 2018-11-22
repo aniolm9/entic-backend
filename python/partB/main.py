@@ -1,17 +1,21 @@
 from conn import conn
 from influx_insert import influx_insert
 from get_data import get_data
+from ser import ser
 
 def main():
-	port = ""
 	client = conn()
+	ser = ser()
 	
-	while 1:
-		measures_dict = get_data(port)
-		for measure, value in measures_dict.items():
-			influx_insert(client, value, measure)
+	try:
+		while 1:
+			measures_dict = get_data(ser)
+			for measure, value in measures_dict.items():
+				influx_insert(client, value, measure)
 
-	client.close()
-	#ser.close()
+	except KeyboardInterrupt:
+		print ("Exiting program...")
+		client.close()
+		ser.close()
 
 main()
