@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 
-# Measure types: pressure, temperature, ph.
+# Measure types: depth, temperature, ph.
 def influx_insert(client, value, measure):
 	date = datetime.utcnow()
 	json_body = [
