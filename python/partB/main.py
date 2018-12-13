@@ -5,17 +5,17 @@ from ser import ser
 
 def main():
 	client = conn()
-	ser = ser()
+	ser_conn = ser()
 	
 	try:
 		while 1:
-			measures_dict = get_data(ser)
+			measures_dict = get_data(ser_conn)
 			for measure, value in measures_dict.items():
 				influx_insert(client, value, measure)
 
 	except KeyboardInterrupt:
 		print ("Exiting program...")
 		client.close()
-		ser.close()
+		ser_conn.close()
 
 main()
