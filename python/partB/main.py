@@ -1,21 +1,23 @@
 from conn import conn
 from influx_insert import influx_insert
-from get_data import get_data
-from ser import ser
+import get_data
+import i2c
+import time
 
 def main():
-	client = conn()
-	ser_conn = ser()
-	
-	try:
-		while 1:
-			measures_dict = get_data(ser_conn)
-			for measure, value in measures_dict.items():
-				influx_insert(client, value, measure)
-
-	except KeyboardInterrupt:
-		print ("Exiting program...")
-		client.close()
-		ser_conn.close()
-
+    client = conn()
+    
+    try:
+        while 1:
+            influx_insert(client, get_data.depth(), "depth")
+            #time.sleep(0.1)
+            influx_insert(client, get_data.ph(), "ph")
+            #time.sleep(0.1)
+            influx_insert(client, get_data.depth(), "temperature")
+            #time.sleep(0.1)
+            
+    except KeyboardInterrupt:
+        print ("Exiting program...")
+        client.close()
+        
 main()
