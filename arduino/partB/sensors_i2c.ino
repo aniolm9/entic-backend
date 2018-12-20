@@ -6,7 +6,7 @@ int number = 0;
 // Sensors
 const int pressure_sensor = A0;
 const int ph_sensor = A2;
-const int temp_sensor = A1;
+const int temp_sensor = A3;
 
 float depth_out, temp_out, ph_out;
 int out = 0;
