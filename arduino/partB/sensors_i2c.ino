@@ -2,7 +2,6 @@
 
 #define SLAVE_ADDRESS 0x04
 int number = 0;
-//int state = 0;
 
 // Sensors
 const int pressure_sensor = A0;
@@ -10,23 +9,21 @@ const int ph_sensor = A2;
 const int temp_sensor = A1;
 
 float depth_out, temp_out, ph_out;
-int d, p, t;
+int out = 0;
 
 void setup() {
-  //pinMode(13, OUTPUT);
   Serial.begin(9600); // start serial for output
+  
   // initialize i2c as slave
   Wire.begin(SLAVE_ADDRESS);
 
   // define callbacks for i2c communication
   Wire.onReceive(receiveData);
-  //Wire.onRequest(sendData);
-
   Serial.println("Ready!");
 }
 
 void loop() {
-  delay(100);
+  delay(20);
 }
 
 float depth() {
@@ -95,30 +92,27 @@ float ph() {
 void receiveData(int byteCount) {
   while (Wire.available()) {
     number = Wire.read();
+    Serial.println(number);
     if (number == 1) {
       depth_out = depth();
-      d = depth_out/(4/254);
-      Serial.println("D: ");
-      Serial.println(d);
-      sendData(d);
+      //depth_out = 2.54;
+      out = depth_out/(4.0/254.0);
     }
     else if (number == 2) {
-      ph_out = ph();
-      p = ph_out/(14/254);
-      Serial.println("P: ");
-      Serial.println(p);
-      sendData(p);
+      ph_out = ph
+      //ph_out = 7.76;
+      out = ph_out/(14.0/254.0);
     }
     else if (number == 3) {
       temp_out = temperature();
-      t = temp_out/(25/254);
-      Serial.println("T: ");
-      Serial.println(t);
-      sendData(t);
+      //temp_out = 14.65;
+      out = temp_out/(25.0/254.0);
     }
+    Wire.onRequest(sendData);
   }
 }
 
-void sendData(int value) {
-  Wire.write(value);
+void sendData() {
+  Serial.println(out);
+  Wire.write(out);
 }
