@@ -11,15 +11,12 @@ const int temp_sensor = A3;
 float depth_out, temp_out, ph_out;
 int out = 0;
 
-void setup() {
-  Serial.begin(9600); // start serial for output
-  
+void setup() {  
   // initialize i2c as slave
   Wire.begin(SLAVE_ADDRESS);
 
   // define callbacks for i2c communication
   Wire.onReceive(receiveData);
-  Serial.println("Ready!");
 }
 
 void loop() {
@@ -28,7 +25,7 @@ void loop() {
 
 float depth() {
   float pressure_value = analogRead(pressure_sensor);
-  float depth = (pressure_value-671)/-71;
+  float depth = (pressure_value-671)/71.0;
   return (depth);
 }
 
@@ -92,20 +89,16 @@ float ph() {
 void receiveData(int byteCount) {
   while (Wire.available()) {
     number = Wire.read();
-    Serial.println(number);
     if (number == 1) {
       depth_out = depth();
-      //depth_out = 2.54;
       out = depth_out/(4.0/254.0);
     }
     else if (number == 2) {
-      ph_out = ph
-      //ph_out = 7.76;
+      ph_out = ph();
       out = ph_out/(14.0/254.0);
     }
     else if (number == 3) {
       temp_out = temperature();
-      //temp_out = 14.65;
       out = temp_out/(25.0/254.0);
     }
     Wire.onRequest(sendData);
@@ -113,6 +106,6 @@ void receiveData(int byteCount) {
 }
 
 void sendData() {
-  Serial.println(out);
   Wire.write(out);
 }
+
