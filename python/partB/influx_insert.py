@@ -14,4 +14,4 @@ def influx_insert(client, value, measure):
     }]
 
 	client.write_points(json_body)
-	time.sleep(0.5)
+        #time.sleep(0.5)

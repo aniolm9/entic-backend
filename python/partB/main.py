@@ -13,7 +13,7 @@ def main():
             #time.sleep(0.1)
             influx_insert(client, get_data.ph(), "ph")
             #time.sleep(0.1)
-            influx_insert(client, get_data.depth(), "temperature")
+            influx_insert(client, get_data.temperature(), "temperature")
             #time.sleep(0.1)
             
     except KeyboardInterrupt:
